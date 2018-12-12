@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width" charset="utf-8">
-    <title>elasticlunr</title>
+    <title>@kickscondor/elasticlunr</title>
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/docs.css">
@@ -63,7 +63,7 @@
     </div>
     <header id="overview" class="jumbotron subhead">
       <div class="container">
-        <h1>elasticlunr</h1>
+        <h1>@kickscondor/elasticlunr</h1>
         <p class="lead"></p>
       </div>
     </header>
@@ -93,23 +93,25 @@
         </div>
         <div class="span9">
           <section id="Main"><h1>Elasticlunr.js</h1>
-<p><a href="https://travis-ci.org/weixsong/elasticlunr.js"><img src="https://travis-ci.org/weixsong/elasticlunr.js.svg?branch=master" alt="Build Status"></a><br /><a href="https://badge.fury.io/js/elasticlunr"><img src="https://badge.fury.io/js/elasticlunr.svg" alt="npm version"></a><br /><a href="https://raw.githubusercontent.com/weixsong/elasticlunr.js/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license"></a></p><p>Elasticlunr.js is a lightweight full-text search engine developed in JavaScript for browser search and offline search.<br />Elasticlunr.js is developed based on Lunr.js, but more flexible than lunr.js. Elasticlunr.js provides Query-Time boosting, field search, more rational scoring/ranking methodology, fast computation speed and so on.<br />Elasticlunr.js is a bit like Solr, but much smaller and not as bright, but also provide flexible configuration, query-time boosting, field search and other features.</p><h1>Why You Need Lightweight Offline Search?</h1>
+<p><a href="https://travis-ci.org/weixsong/elasticlunr.js"><img src="https://travis-ci.org/weixsong/elasticlunr.js.svg?branch=master" alt="Build Status"></a><br /><a href="https://badge.fury.io/js/elasticlunr"><img src="https://badge.fury.io/js/elasticlunr.svg" alt="npm version"></a><br /><a href="https://raw.githubusercontent.com/weixsong/elasticlunr.js/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license"></a><br /><a href="https://github.com/ellerbrock/open-source-badge/"><img src="https://badges.frapsoft.com/os/v2/open-source.svg?v=103" alt="Open Source Love"></a></p><h1>Milestone</h1>
+<p>Thanks that so many people use and love Elasticlunr.js, it has received more than 500 stars.</p><h1>Elasticlunr.js</h1>
+<p>Elasticlunr.js is a lightweight full-text search engine developed in JavaScript for browser search and offline search.<br />Elasticlunr.js is developed based on Lunr.js, but more flexible than lunr.js. Elasticlunr.js provides Query-Time boosting, field search, more rational scoring/ranking methodology, fast computation speed and so on.<br />Elasticlunr.js is a bit like Solr, but much smaller and not as bright, but also provide flexible configuration, query-time boosting, field search and other features.</p><h1>Why You Need Lightweight Offline Search?</h1>
 <ol>
-<li>In some system, you don&#39;t want to deploy any <strong>complex full-text search engine</strong>(such as Lucence, Elasticsearch, Sphinx, etc.), you only want to provide some static web pages and provide search functionality , then you could build index in previous and load index in client side(such as Browser).</li>
-<li>Provide offline search functionality. For some documents, user usually download these documents, you could build index and put index in the documents package, then provide offline search functionality.</li>
-<li>For some limited or restricted network, such WAN or LAN, offline search is a better choice.</li>
-<li>For mobile device, Iphone or Android phone, network traffic maybe very expensive, then provide offline search is a good choice.</li>
+<li>In some systems, you don&#39;t want to deploy any <strong>complex full-text search engine</strong> (such as Lucene, Elasticsearch, Sphinx, etc.), you only want to provide some static web pages and provide search functionality, then you could build index in previous and load index in client side (such as Browser).</li>
+<li>Provide offline search functionality. For some documents, the user usually downloads these documents, you could build index and put index in the documents package, then provide offline search functionality.</li>
+<li>For limited or restricted networks, such WAN or LAN, offline search is a better choice.</li>
+<li>For mobile devices, Iphone or Android phones, network traffic may be very expensive, so offline search is a good choice.</li>
 <li>If you want to provide search functionality in your Node.js system, and you don&#39;t want to use a complex system, or you only need to support thousands of documents, then Elasticlunr.js is what you want to use.</li>
 </ol>
 <h1>Key Features Comparing with Lunr.js</h1>
 <ol>
-<li><strong>Query-Time Boosting</strong>, you don&#39;t need to setup boosting weight in index building procedure, Query-Time Boosting make it more flexible that you could try different boosting scheme.</li>
-<li><strong>More Rational Scoring Mechanism</strong>, Elasticlunr.js use quite the same scoring mechanism as Elasticsearch, and also this scoring mechanism is used by lucene. </li>
-<li><strong>Field-Search</strong>, you could choose which field to index and which field to search.</li>
-<li><strong>Boolean Model</strong>, you could set which field to search and the boolean model for each query token, such as &quot;OR&quot;, &quot;AND&quot;.</li>
-<li><strong>Combined Boolean Model, TF/IDF Model and the Vector Space Model</strong>, make the results ranking more reliable.</li>
-<li><strong>Fast</strong>, Elasticlunr.js removed TokenCorpus and Vector from lunr.js, by using combined model there is <strong>no</strong> need to compute the vector of a document and query string to compute similarity of query and matched document, this improve the search speed significantly.</li>
-<li><strong>Small Index Size</strong>, Elasticlunr.js did not store TokenCorpus because there is no need to compute query vector and document vector, then the index file is small, and also user could choose if they need to store the origianl JSON doc, if user care more about the index size, they could choose not store the original JSON doc, this could reduce the index size significantly. This is especially helpful when elasticlunr.js is used as offline search. The index size is about half size of lunr.js index file.</li>
+<li><strong>Query-Time Boosting</strong>, you don&#39;t need to set up boosting weight in index building procedure, Query-Time Boosting make it more flexible so you could try different boosting schemes.</li>
+<li><strong>More Rational Scoring Mechanism</strong>, Elasticlunr.js uses a similar scoring mechanism as Elasticsearch, and also this scoring mechanism is used by Lucene.</li>
+<li><strong>Field-Search</strong>, you can choose which field to index and which field to search.</li>
+<li><strong>Boolean Model</strong>, you can set which field to search and the boolean model for each query token, such as &quot;OR&quot;, &quot;AND&quot;.</li>
+<li><strong>Combined Boolean Model, TF/IDF Model and the Vector Space Model</strong>, makes the results ranking more reliable.</li>
+<li><strong>Fast</strong>, Elasticlunr.js removed TokenCorpus and Vector from lunr.js, by using combined model there is <strong>no</strong> need to compute the vector of a document and query string to compute similarity of query and matched document, this improves the search speed significantly.</li>
+<li><strong>Small Index Size</strong>, Elasticlunr.js did not store TokenCorpus because there is no need to compute query vector and document vector, then the index file is small, and also user can choose if they need to store the origianl JSON doc, if user cares more about the index size, they can choose not store the original JSON doc. This can reduce the index size significantly. This is especially helpful when elasticlunr.js is used as offline search. The index size is about half size of lunr.js index file.</li>
 </ol>
 <h2>Example</h2>
 <p>A very simple search index can be created using the following scripts:</p><pre><code class="lang-javascript">var index = elasticlunr(function () {
@@ -121,7 +123,7 @@
 <p>Adding documents to the index is as simple as:</p><pre><code class="lang-javascript">var doc1 = {
     &quot;id&quot;: 1,
     &quot;title&quot;: &quot;Oracle released its latest database Oracle 12g&quot;,
-    &quot;body&quot;: &quot;Yestaday Oracle has released its new database Oracle 12g, this would make more money for this company and lead to a nice profit report of annual year.&quot;
+    &quot;body&quot;: &quot;Yesterday Oracle has released its new database Oracle 12g, this would make more money for this company and lead to a nice profit report of annual year.&quot;
 }
 
 var doc2 = {
@@ -151,14 +153,19 @@ index.addDoc(doc2);
     &quot;score&quot;: 0.5237481076838757
 }]
 </code></pre>
-<p>If user do not want to store the original JSON documents, they could use the following setting:</p><pre><code class="lang-javascript">var index = elasticlunr(function () {
+<p>You can also query on different terms for each field.</p><pre><code class="lang-javascript">index.search({
+  title: &#39;database&#39;,
+  body:  &#39;profit&#39;,
+});
+</code></pre>
+<p>If user doesn&#39;t want to store the original JSON documents, they can use the following setting:</p><pre><code class="lang-javascript">var index = elasticlunr(function () {
     this.addField(&#39;title&#39;);
     this.addField(&#39;body&#39;);
     this.setRef(&#39;id&#39;);
     this.saveDocument(false);
 });
 </code></pre>
-<p>Then elasticlunr.js will not store the JSON documents, this will reduce the index size, but also bring some inconvenience such as update a document or delete a document by document id or reference. Actually most of the time user will not udpate or delete a document from index. </p><p><a href="http://elasticlunr.com/docs/index.html">API documentation</a> is available, as well as a <a href="http://elasticlunr.com/example/index.html">full working example</a>.</p><h2>Description</h2>
+<p>Then elasticlunr.js will not store the JSON documents, this will reduce the index size, but also bring some inconvenience such as update a document or delete a document by document id or reference. Actually most of the time user will not udpate or delete a document from index.</p><p><a href="http://elasticlunr.com/docs/index.html">API documentation</a> is available, as well as a <a href="http://elasticlunr.com/example/index.html">full working example</a>.</p><h2>Description</h2>
 <p>Elasticlunr.js is developed based on Lunr.js, but more flexible than lunr.js. Elasticlunr.js provides Query-Time Boosting, Field Search, more rational scoring/ranking methodology, flexible configuration and so on.<br />A bit like Solr, but much smaller and not as bright, but also provide flexible configuration, query-time boosting, field search, etc.</p><h2>Installation</h2>
 <p>Simply include the elasticlunr.js source file in the page that you want to use it.  Elasticlunr.js is supported in all modern browsers.</p><p>Browsers that do not support ES5 will require a JavaScript shim for Elasticlunr.js to work. You can either use <a href="https://github.com/olivernn/augment.js">Augment.js</a>, <a href="https://github.com/kriskowal/es5-shim">ES5-Shim</a> or any library that patches old browsers to provide an ES5 compatible JavaScript environment.</p><h1>Documentation</h1>
 <p>This part only contain important apects of elasticlunr.js, for the whole documentation, please go to <a href="http://elasticlunr.com/docs/index.html">API documentation</a>.</p><h2>1. Build Index</h2>
@@ -205,13 +212,13 @@ index.addDoc(doc2);
 index.removeDoc(doc);
 </code></pre>
 <p>Remove a document will remove each token of that document&#39;s each field from field-specified inverted index.</p><h2>4. Update a document in index</h2>
-<p>Elasticlunr.js support update a document in index, just provide JSON document to <code>elasticlunr.Index.prototype.update()</code> function.</p><p>For example:</p><pre><code class="lang-javascript">var doc = {
+<p>Elasticlunr.js support update a document in index, just provide JSON document to <code>elasticlunr.Index.prototype.updateDoc()</code> function.</p><p>For example:</p><pre><code class="lang-javascript">var doc = {
     &quot;id&quot;: 1,
     &quot;title&quot;: &quot;Oracle released its latest database Oracle 12g&quot;,
     &quot;body&quot;: &quot;Yestaday Oracle has released its new database Oracle 12g, this would make more money for this company and lead to a nice profit report of annual year.&quot;
 }
 
-index.update(doc);
+index.updateDoc(doc);
 </code></pre>
 <h2>5. Query from Index</h2>
 <p>Elasticlunr.js provides flexible query configuration, supports query-time boosting and Boolean logic setting.<br />You could setup a configuration tell elasticlunr.js how to do query-time boosting, which field to search in, how to do the boolean logic.<br />Or you could just use it by simply provide a query string, this will aslo works perfectly because the scoring mechanism is very efficient.</p><h3>5.1 Simple Query</h3>
@@ -313,7 +320,52 @@ index.addDoc(doc2);
 
 index.search(&quot;Oracle database profit&quot;);
 </code></pre>
-<h1>Other Languages</h1>
+<h2>8. Save &amp; Load Index</h2>
+<p>You just need to build index only one time offline, and then save the index to a JSON file, for future usage, you just need to load the index file.</p><p>Save the index to JSON file as followings:</p><pre><code class="lang-javascript">var elasticlunr = require(&#39;./elasticlunr.js&#39;),
+    fs = require(&#39;fs&#39;);
+
+var idx = elasticlunr(function () {
+  this.setRef(&#39;id&#39;);
+
+  this.addField(&#39;title&#39;);
+  this.addField(&#39;tags&#39;);
+  this.addField(&#39;body&#39;);
+});
+
+fs.readFile(&#39;./example/example_data.json&#39;, function (err, data) {
+  if (err) throw err;
+
+  var raw = JSON.parse(data);
+
+  var questions = raw.questions.map(function (q) {
+    return {
+      id: q.question_id,
+      title: q.title,
+      body: q.body,
+      tags: q.tags.join(&#39; &#39;)
+    };
+  });
+
+  questions.forEach(function (question) {
+    idx.addDoc(question);
+  });
+
+  fs.writeFile(&#39;./example/example_index.json&#39;, JSON.stringify(idx), function (err) {
+    if (err) throw err;
+    console.log(&#39;done&#39;);
+  });
+});
+</code></pre>
+<p>The above code is the example index builder usage in <a href="http://elasticlunr.com/example/index.html">elasticlunr online example</a>, you only need to pay attention to:</p><pre><code class="lang-javascript">  fs.writeFile(&#39;./example/example_index.json&#39;, JSON.stringify(idx), function (err) {
+    if (err) throw err;
+    console.log(&#39;done&#39;);
+  });
+</code></pre>
+<p>The function of <code>elasticlunr.Index.prototype.toJSON</code> is called in <code>JSON.stringify(idx)</code>.</p><p>If you want load an alreay persisted index file, you could use:</p><pre><code class="lang-javascript">  var indexDump = JSON.parse(indexDump)
+  console.time(&#39;load&#39;)
+  window.idx = elasticlunr.Index.load(indexDump)
+</code></pre>
+<p><code>indexDump</code> is a file content, other your could load archived JSON index as whatever way you like. I&#39;m not familiar with Javascript, so you are welcome to update this document to provide detailed example.</p><h1>Other Languages</h1>
 <p>Default supported language of elasticlunr.js is English, if you want to use elasticlunr.js to index other language documents, then you need to use elasticlunr.js combined with <a href="https://github.com/weixsong/lunr-languages">lunr-languages</a>.</p><h2>Other languages example in Browser</h2>
 <p>Suppose you are using <strong>elasticlunr.js</strong> in browser for other languages, you could download the corresponding language support from <a href="https://github.com/weixsong/lunr-languages">lunr-languages</a>, then include the scripts as:</p><pre><code class="lang-html">&lt;script src=&quot;lunr.stemmer.support.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;lunr.de.js&quot;&gt;&lt;/script&gt;
@@ -331,7 +383,7 @@ index.search(&quot;Oracle database profit&quot;);
 <p>If you are using other language, such as <strong>es</strong>(Spanish), download the corresponding <code>lunr.es.js</code> file and <code>lunr.stemmer.support.js</code>, and change the above line to:</p><pre><code class="lang-javascript">    this.use(elasticlunr.es);
 </code></pre>
 <h2>Other languages example in Node.js</h2>
-<p>Suppose you are using <strong>elasticlunr.js</strong> in <strong>Node.js</strong> for other languages, you could download the corresponding language support from <a href="https://github.com/weixsong/lunr-languages">lunr-languages</a>, put the files <code>lunr.es.js</code> file and <code>lunr.stemmer.support.js</code> in your project, then in your <strong>Node.js</strong> module, use <strong>elasticlunr.js</strong> as:</p><pre><code class="lang-javascript">var elasticlunr = require(&#39;elasticlunr&#39;);
+<p>Suppose you are using <strong>elasticlunr.js</strong> in <strong>Node.js</strong> for other languages, you can download the corresponding language support from <a href="https://github.com/weixsong/lunr-languages">lunr-languages</a>, put the files <code>lunr.es.js</code> file and <code>lunr.stemmer.support.js</code> in your project, then in your <strong>Node.js</strong> module, use <strong>elasticlunr.js</strong> as:</p><pre><code class="lang-javascript">var elasticlunr = require(&#39;elasticlunr&#39;);
 require(&#39;./lunr.stemmer.support.js&#39;)(elasticlunr);
 require(&#39;./lunr.de.js&#39;)(elasticlunr);
 

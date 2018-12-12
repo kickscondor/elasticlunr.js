@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width" charset="utf-8">
-    <title>elasticlunr</title>
+    <title>@kickscondor/elasticlunr</title>
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css">
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/docs.css">
@@ -63,7 +63,7 @@
     </div>
     <header id="overview" class="jumbotron subhead">
       <div class="container">
-        <h1>elasticlunr</h1>
+        <h1>@kickscondor/elasticlunr</h1>
         <p class="lead"></p>
       </div>
     </header>
@@ -158,6 +158,48 @@
   var idx = new this;
   idx.root = serialisedData.root;
 
+  // Expand the nodes from the more compressed format
+  var nodeList = [idx.root];
+
+  while (nodeList.length) {
+    var node = nodeList.shift();
+
+    // node.docs can be skipped
+    if (! node.docs) {
+      node.docs = {};
+    }
+
+    // expand node.docs.* from a &quot;tf&quot; value into an object
+    for (var key in node.docs) {
+      if (typeof node.docs[key] !== &quot;object&quot;) {
+        node.docs[key] = {
+          tf: node.docs[key]
+        };
+      }
+    }
+
+    // node.df is removed entirely. It exactly matches the number of
+    // documents.
+    node.df = Object.keys(node.docs).length;
+
+    // Keys get compressed when there is only one key in the child and that
+    // key is not the &quot;docs&quot; key.
+    // So {&quot;a&quot;:{&quot;b&quot;:{&quot;docs&quot;:...}}} becomes {&quot;ab&quot;:{&quot;docs&quot;:...}}
+    for (var key in node) {
+      if (key != &quot;docs&quot; &amp;&amp; key != &quot;df&quot;) {
+        if (key.length &gt; 1) {
+          var child = {};
+          child[key.substr(1)] = node[key];
+          node[key.charAt(0)] = child;
+          delete node[key];
+          nodeList.push(child);
+        } else {
+          nodeList.push(node[key]);
+        }
+      }
+    }
+  }
+
   return idx;
 };</code></pre>
           <section id="addToken">
@@ -193,7 +235,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Adds a {token: tokenInfo} pair to the inverted index.<br />If the token already exist, then update the tokenInfo.</p><p>tokenInfo format: { ref: 1, tf: 2}<br />tokenInfor should contains the document&#39;s ref and the tf(token frequency) of that token in<br />the document.</p><p>By default this function starts at the root of the current inverted index, however<br />it can start at any node of the inverted index if required.</p> </div>
+          <div class="description"><p>Adds a {token: tokenInfo} pair to the inverted index.<br />If the token already exist, then update the tokenInfo.</p><p>tokenInfo format: { ref: 1, tf: 2}<br />tokenInfo should contains the document&#39;s ref and the tf(token frequency) of that token in<br />the document.</p><p>By default this function starts at the root of the current inverted index, however<br />it can start at any node of the inverted index if required.</p> </div>
           <pre><code class="language-javascript">elasticlunr.InvertedIndex.prototype.addToken = function (token, tokenInfo, root) {
   var root = root || this.root,
       idx = 0;
@@ -515,10 +557,59 @@
               <div class="label label-info radius ctx-type">method</div><span>elasticlunr.InvertedIndex.prototype.toJSON()</span>
             </p>
           </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>[compress=false]</td>
+                <td>boolean</td>
+                <td><p>Set to true to have a more condensed format.</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Object</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
           <div class="description"><p>Returns a representation of the inverted index ready for serialisation.</p> </div>
-          <pre><code class="language-javascript">elasticlunr.InvertedIndex.prototype.toJSON = function () {
+          <pre><code class="language-javascript">elasticlunr.InvertedIndex.prototype.toJSON = function (compress) {
+  function copyNode(node) {
+    var copy = {};
+    if (Object.keys(node.docs).length) {
+      copy.docs = {};
+      for (key in node.docs) {
+        copy.docs[key] = +node.docs[key].tf.toFixed(8);
+      }
+    }
+    for (var key in node) {
+      if (key !== &quot;docs&quot; &amp;&amp; key !== &quot;df&quot;) {
+        var child = copyNode(node[key]);
+        var childKeys = Object.keys(child);
+        if (childKeys.length == 1 &amp;&amp; childKeys[0] !== &quot;docs&quot;) {
+          copy[key + childKeys[0]] = child[childKeys[0]];
+        } else {
+          copy[key] = child;
+        }
+      }
+    }
+    return copy;
+  }
+
+  if (!compress) {
+    return {
+      root: this.root
+    };
+  }
+
   return {
-    root: this.root
+    root: copyNode(this.root)
   };
 };</code></pre>
         </div>

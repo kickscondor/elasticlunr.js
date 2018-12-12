@@ -1,9 +1,9 @@
 /**
  * elasticlunr - http://weixsong.github.io
- * Lightweight full-text search engine in Javascript for browser search and offline search. - 0.9.5
+ * Lightweight full-text search engine in Javascript for browser search and offline search. - 0.9.6
  *
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  * MIT Licensed
  * @license
  */
@@ -12,8 +12,8 @@
 
 /*!
  * elasticlunr.js
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -83,7 +83,7 @@ var elasticlunr = function (config) {
   return idx;
 };
 
-elasticlunr.version = "0.9.5";
+elasticlunr.version = "0.9.6";
 
 // only used this to make elasticlunr.js compatible with lunr-languages
 // this is a trick to define a global alias of elasticlunr
@@ -91,8 +91,8 @@ lunr = elasticlunr;
 
 /*!
  * elasticlunr.utils
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -134,8 +134,8 @@ elasticlunr.utils.toString = function (obj) {
 };
 /*!
  * elasticlunr.EventEmitter
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -222,8 +222,8 @@ elasticlunr.EventEmitter.prototype.hasHandler = function (name) {
 };
 /*!
  * elasticlunr.tokenizer
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -308,8 +308,8 @@ elasticlunr.tokenizer.getSeperator = function() {
 }
 /*!
  * elasticlunr.Pipeline
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -563,8 +563,8 @@ elasticlunr.Pipeline.prototype.toJSON = function () {
 };
 /*!
  * elasticlunr.Index
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -1128,13 +1128,14 @@ elasticlunr.Index.prototype.coordNorm = function (scores, docTokens, n) {
 /**
  * Returns a representation of the index ready for serialisation.
  *
+ * @param {boolean} [compress=false]
  * @return {Object}
  * @memberOf Index
  */
-elasticlunr.Index.prototype.toJSON = function () {
+elasticlunr.Index.prototype.toJSON = function (compress) {
   var indexJson = {};
   this._fields.forEach(function (field) {
-    indexJson[field] = this.index[field].toJSON();
+    indexJson[field] = this.index[field].toJSON(compress);
   }, this);
 
   return {
@@ -1180,7 +1181,7 @@ elasticlunr.Index.prototype.use = function (plugin) {
 };
 /*!
  * elasticlunr.DocumentStore
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -1374,8 +1375,8 @@ function clone(obj) {
 }
 /*!
  * elasticlunr.stemmer
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  * Includes code from - http://tartarus.org/~martin/PorterStemmer/js.txt
  */
 
@@ -1593,8 +1594,8 @@ elasticlunr.stemmer = (function(){
 elasticlunr.Pipeline.registerFunction(elasticlunr.stemmer, 'stemmer');
 /*!
  * elasticlunr.stopWordFilter
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -1780,8 +1781,8 @@ elasticlunr.stopWordFilter.stopWords = elasticlunr.defaultStopWords;
 elasticlunr.Pipeline.registerFunction(elasticlunr.stopWordFilter, 'stopWordFilter');
 /*!
  * elasticlunr.trimmer
- * Copyright (C) 2017 Oliver Nightingale
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Oliver Nightingale
+ * Copyright (C) 2018 Wei Song
  */
 
 /**
@@ -1811,7 +1812,7 @@ elasticlunr.trimmer = function (token) {
 elasticlunr.Pipeline.registerFunction(elasticlunr.trimmer, 'trimmer');
 /*!
  * elasticlunr.InvertedIndex
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Wei Song
  * Includes code from - http://tartarus.org/~martin/PorterStemmer/js.txt
  */
 
@@ -1835,6 +1836,48 @@ elasticlunr.InvertedIndex.load = function (serialisedData) {
   var idx = new this;
   idx.root = serialisedData.root;
 
+  // Expand the nodes from the more compressed format
+  var nodeList = [idx.root];
+
+  while (nodeList.length) {
+    var node = nodeList.shift();
+
+    // node.docs can be skipped
+    if (! node.docs) {
+      node.docs = {};
+    }
+
+    // expand node.docs.* from a "tf" value into an object
+    for (var key in node.docs) {
+      if (typeof node.docs[key] !== "object") {
+        node.docs[key] = {
+          tf: node.docs[key]
+        };
+      }
+    }
+
+    // node.df is removed entirely. It exactly matches the number of
+    // documents.
+    node.df = Object.keys(node.docs).length;
+
+    // Keys get compressed when there is only one key in the child and that
+    // key is not the "docs" key.
+    // So {"a":{"b":{"docs":...}}} becomes {"ab":{"docs":...}}
+    for (var key in node) {
+      if (key != "docs" && key != "df") {
+        if (key.length > 1) {
+          var child = {};
+          child[key.substr(1)] = node[key];
+          node[key.charAt(0)] = child;
+          delete node[key];
+          nodeList.push(child);
+        } else {
+          nodeList.push(node[key]);
+        }
+      }
+    }
+  }
+
   return idx;
 };
 
@@ -1843,7 +1886,7 @@ elasticlunr.InvertedIndex.load = function (serialisedData) {
  * If the token already exist, then update the tokenInfo.
  *
  * tokenInfo format: { ref: 1, tf: 2}
- * tokenInfor should contains the document's ref and the tf(token frequency) of that token in
+ * tokenInfo should contains the document's ref and the tf(token frequency) of that token in
  * the document.
  *
  * By default this function starts at the root of the current inverted index, however
@@ -2035,18 +2078,47 @@ elasticlunr.InvertedIndex.prototype.expandToken = function (token, memo, root) {
 /**
  * Returns a representation of the inverted index ready for serialisation.
  *
+ * @param {boolean} [compress=false] Set to true to have a more condensed format.
  * @return {Object}
  * @memberOf InvertedIndex
  */
-elasticlunr.InvertedIndex.prototype.toJSON = function () {
+elasticlunr.InvertedIndex.prototype.toJSON = function (compress) {
+  function copyNode(node) {
+    var copy = {};
+    if (Object.keys(node.docs).length) {
+      copy.docs = {};
+      for (key in node.docs) {
+        copy.docs[key] = +node.docs[key].tf.toFixed(8);
+      }
+    }
+    for (var key in node) {
+      if (key !== "docs" && key !== "df") {
+        var child = copyNode(node[key]);
+        var childKeys = Object.keys(child);
+        if (childKeys.length == 1 && childKeys[0] !== "docs") {
+          copy[key + childKeys[0]] = child[childKeys[0]];
+        } else {
+          copy[key] = child;
+        }
+      }
+    }
+    return copy;
+  }
+
+  if (!compress) {
+    return {
+      root: this.root
+    };
+  }
+
   return {
-    root: this.root
+    root: copyNode(this.root)
   };
 };
 
 /*!
  * elasticlunr.Configuration
- * Copyright (C) 2017 Wei Song
+ * Copyright (C) 2018 Wei Song
  */
  
  /** 
@@ -2237,7 +2309,7 @@ elasticlunr.Configuration.prototype.reset = function () {
 
 /*!
  * lunr.SortedSet
- * Copyright (C) 2017 Oliver Nightingale
+ * Copyright (C) 2018 Oliver Nightingale
  */
 
 /**

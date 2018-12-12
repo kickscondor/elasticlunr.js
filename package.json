@@ -1,17 +1,19 @@
 {
-  "name": "elasticlunr",
-  "description": "Lightweight full-text search engine in Javascript for browser search and offline search.",
+  "name": "@kickscondor/elasticlunr",
+  "description": "Fork of lightweight full-text search engine in Javascript for browser search and offline search. Adds compression by fidian.",
   "version": "0.9.6",
-  "author": "Wei Song",
-  "keywords": ["search", "text retrieval", "offline search", "full text search"],
-  "homepage": "http://weixsong.github.io",
-  "bugs": "https://github.com/weixsong/elasticlunr.js/issues",
+  "author": "Kicks Condor",
+  "keywords": [
+    "search",
+    "text retrieval",
+    "offline search",
+    "full text search"
+  ],
+  "homepage": "http://github.com/kickscondor/elasticlunr.js#README",
+  "bugs": "http://github.com/kickscondor/elasticlunr.js/issues",
   "main": "elasticlunr.js",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/weixsong/elasticlunr.js"
-  },
+  "repository": "kickscondor/elasticlunr.js",
   "devDependencies": {
     "doxx": "1.4.0",
     "phantomjs": "1.9.8",

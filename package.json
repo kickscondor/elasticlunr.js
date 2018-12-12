@@ -1,7 +1,7 @@
 {
   "name": "@kickscondor/elasticlunr",
   "description": "Fork of lightweight full-text search engine in Javascript for browser search and offline search. Adds compression by fidian.",
-  "version": "0.9.6",
+  "version": "0.9.8",
   "author": "Kicks Condor",
   "keywords": [
     "search",

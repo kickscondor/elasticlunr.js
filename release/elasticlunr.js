@@ -1,6 +1,6 @@
 /**
  * elasticlunr - http://weixsong.github.io
- * Lightweight full-text search engine in Javascript for browser search and offline search. - 0.9.6
+ * Lightweight full-text search engine in Javascript for browser search and offline search. - 0.9.8
  *
  * Copyright (C) 2018 Oliver Nightingale
  * Copyright (C) 2018 Wei Song
@@ -83,7 +83,7 @@ var elasticlunr = function (config) {
   return idx;
 };
 
-elasticlunr.version = "0.9.6";
+elasticlunr.version = "0.9.8";
 
 // only used this to make elasticlunr.js compatible with lunr-languages
 // this is a trick to define a global alias of elasticlunr
@@ -1336,7 +1336,7 @@ elasticlunr.DocumentStore.prototype.updateFieldLength = function (docRef, fieldN
 elasticlunr.DocumentStore.prototype.getFieldLength = function (docRef, fieldName) {
   if (docRef === null || docRef === undefined) return 0;
 
-  if (!(docRef in this.docs)) return 0;
+  if (!(docRef in this.docInfo)) return 0;
   if (!(fieldName in this.docInfo[docRef])) return 0;
   return this.docInfo[docRef][fieldName];
 };
